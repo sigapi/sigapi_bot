@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 
 class DebugController extends Controller {
 
@@ -11,6 +12,8 @@ class DebugController extends Controller {
     }
 
     public function getFromCache() {
+        Log::info('Testando cache');
+
         if (Cache::has('test')) {
             dump(Cache::get('test'));
         } else {

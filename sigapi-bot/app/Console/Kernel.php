@@ -2,38 +2,30 @@
 
 namespace App\Console;
 
+use App\Services\Bot\GetUpdatesService;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
-class Kernel extends ConsoleKernel
-{
-    /**
-     * The Artisan commands provided by your application.
-     *
-     * @var array
-     */
-    protected $commands = [
-        //
-    ];
+class Kernel extends ConsoleKernel {
 
-    /**
-     * Define the application's command schedule.
-     *
-     * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
-     * @return void
-     */
-    protected function schedule(Schedule $schedule)
-    {
-        // $schedule->command('inspire')
-        //          ->hourly();
+    protected function schedule(Schedule $schedule) {
+
+        $schedule->call(function() {
+            self::repeatAfterSeconds(function() {
+                (new GetUpdatesService())->getUpdates();
+            }, 5);
+        })->everyMinute();
+
     }
 
-    /**
-     * Register the Closure based commands for the application.
-     *
-     * @return void
-     */
-    protected function commands()
-    {
+    protected static function repeatAfterSeconds($repeatable, $seconds) {
+        $repetitions = (60  / $seconds) - 1;
+        for ($i = 0; $i < $repetitions; $i++) {
+            $repeatable();
+            sleep($seconds);
+        }
     }
+
+    protected function commands() {}
+
 }

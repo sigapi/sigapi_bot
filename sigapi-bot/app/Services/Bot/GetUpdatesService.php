@@ -1,25 +1,23 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Services\Bot;
 
-use Telegram\Bot\Api;
 use App\Jobs\ProcessUpdate;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
+use Telegram\Bot\Api;
 
-/**
- * Class BotController
- */
-class BotController extends Controller
-{
-    protected $telegram;
+class GetUpdatesService {
 
-    public function __construct(Api $telegram) {
-        $this->telegram = $telegram;
+    private static function getTelegram() {
+        return app('Telegram\Bot\Api');
     }
 
     public function getUpdates() {
 
-        $updates = $this->telegram->getUpdates(array(
+        Log::debug('GetUpdatesService.getUpdates - INICIO');
+
+        $updates = self::getTelegram()->getUpdates(array(
             "offset" => Cache::get('last-message', 0) + 1,
             "limit" => 10,
         ));
@@ -28,6 +26,8 @@ class BotController extends Controller
             dispatch(new ProcessUpdate($update));
             Cache::forever('last-message', $update["update_id"]);
         }
+
+        Log::debug('GetUpdatesService.getUpdates - FIM');
 
     }
 

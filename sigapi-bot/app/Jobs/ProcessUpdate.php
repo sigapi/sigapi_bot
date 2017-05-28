@@ -18,8 +18,8 @@ class ProcessUpdate implements ShouldQueue {
     protected $update;
 
     public function __construct(Update $update) {
-        Log::info('Construtor');
         $this->update = $update;
+        Log::info('Criando job: ' . $this->update["update_id"]);
     }
 
     public function handle() {

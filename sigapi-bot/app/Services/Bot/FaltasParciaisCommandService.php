@@ -16,7 +16,7 @@ class FaltasParciaisCommandService extends AbstractService {
         Log::info("FaltasParciaisCommandService.process: $chatId");
 
         if (self::hasToken($chatId)) {
-            self::sendMessage($chatId, "🗂 *Faltas Parciais*\n\nEm breve");
+            self::sendMessage($chatId, "⌛ *Faltas Parciais*\n\nEm breve");
         } else {
             self::sendMessage($chatId, "🔓 Você não está conectado");
         }

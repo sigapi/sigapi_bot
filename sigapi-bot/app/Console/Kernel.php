@@ -12,39 +12,10 @@ class Kernel extends ConsoleKernel {
     protected function schedule(Schedule $schedule) {
 
         $schedule->call(function() {
-            $this->monitorQueue();
-        })->name('monitor_queue_listener')->everyMinute();
-
-        $schedule->call(function() {
             self::repeatAfterSeconds(function() {
                 (new GetUpdatesService())->getUpdates();
             }, 5);
         })->everyMinute();
-
-    }
-
-    // https://gist.github.com/mauris/11375869#gistcomment-1818901
-    protected function monitorQueue() {
-
-        $run_command = false;
-        $monitor_file_path = storage_path('queue.pid');
-
-        if (file_exists($monitor_file_path)) {
-            $pid = file_get_contents($monitor_file_path);
-            $result = exec("ps -p $pid --no-heading | awk '{print $1}'");
-
-            if ($result == '') {
-                $run_command = true;
-            }
-        } else {
-            $run_command = true;
-        }
-
-        if ($run_command) {
-            $command = 'php '. base_path('artisan'). ' queue:listen > /dev/null & echo $!';
-            $number = exec($command);
-            file_put_contents($monitor_file_path, $number);
-        }
 
     }
 

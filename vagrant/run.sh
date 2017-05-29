@@ -27,3 +27,4 @@ cp .env.production .env
 # Inicia novamente
 cd /vagrant/laradock
 docker-compose up -d nginx redis
+docker-compose exec -d workspace nohup php artisan queue:listen

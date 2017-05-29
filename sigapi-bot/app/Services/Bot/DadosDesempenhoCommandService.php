@@ -20,10 +20,14 @@ class DadosDesempenhoCommandService extends AbstractService {
                 $body = $response->getBody()->getContents();
                 $jsonResult = json_decode($body);
 
-                $message = "📊 *Dados de Desempenho*\n\n";
+                $message = "📊 *Dados de Desempenho*\n";
+                $message .= "_O Maior PR do Curso não é exibido caso esteja indisponível_\n\n";
+
                 $message .= "*PP*: " . number_format($jsonResult->pp, 2, ",", ".") . "\n";
                 $message .= "*PR*: " . number_format($jsonResult->pr, 2, ",", ".") . "\n";
-                $message .= "*Maior PR do Curso*: " . number_format($jsonResult->maiorPrCurso, 2, ",", ".");
+                if ($jsonResult->maiorPrCurso > 0) {
+                    $message .= "*Maior PR do Curso*: " . number_format($jsonResult->maiorPrCurso, 2, ",", ".") . "\n";
+                }
 
                 self::sendMessage($chatId, $message);
             } else {

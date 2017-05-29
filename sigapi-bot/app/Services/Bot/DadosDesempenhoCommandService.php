@@ -14,7 +14,13 @@ class DadosDesempenhoCommandService extends AbstractService {
 
         Log::debug('DadosDesempenhoCommandService.process - INICIO');
         Log::info("DadosDesempenhoCommandService.process: $chatId");
-        self::sendMessage($chatId, "Dados de Desempenho");
+
+        if (self::hasToken($chatId)) {
+            self::sendMessage($chatId, "🗿 Já já");
+        } else {
+            self::sendMessage($chatId, "🔓 Você não está conectado");
+        }
+
         Log::debug('DadosDesempenhoCommandService.process - FIM');
 
     }

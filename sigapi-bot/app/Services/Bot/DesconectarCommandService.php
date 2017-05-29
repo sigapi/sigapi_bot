@@ -2,19 +2,30 @@
 
 namespace App\Services\Bot;
 
-use App\Jobs\ProcessUpdate;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
-use Telegram\Bot\Api;
-use Telegram\Bot\Objects\Update;
 
 class DesconectarCommandService extends AbstractService {
 
     public function process($chatId) {
 
         Log::debug('DesconectarCommandService.process - INICIO');
+
         Log::info("DesconectarCommandService.process: $chatId");
-        self::sendMessage($chatId, "Desconectar");
+
+        if (self::hasToken($chatId)) {
+
+            Cache::forget($chatId);
+            self::sendMessage($chatId, "✅ Você foi desconectado");
+            self::sendMessage($chatId, "👊 Até a próxima");
+
+
+        } else {
+
+            self::sendMessage($chatId, "🔓 Você não está conectado");
+
+        }
+
         Log::debug('DesconectarCommandService.process - FIM');
 
     }

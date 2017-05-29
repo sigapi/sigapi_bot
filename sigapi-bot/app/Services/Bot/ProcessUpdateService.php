@@ -60,7 +60,7 @@ class ProcessUpdateService extends AbstractService {
                 break;
 
             default:
-                self::sendMessage($chatId, "Não conheço esse comando 👎");
+                self::sendMessage($chatId, "❗ Não conheço esse comando");
         }
 
         Log::debug('ProcessUpdateService.process - FIM');

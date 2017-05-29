@@ -16,11 +16,28 @@ class DadosCadastraisCommandService extends AbstractService {
         Log::info("DadosCadastraisCommandService.process: $chatId");
 
         if (self::hasToken($chatId)) {
-            self::sendMessage($chatId, "🗿 Já já");
-        } else {
-            self::sendMessage($chatId, "🔓 Você não está conectado");
-        }
 
+            $response = self::getClient($chatId)->get("dados-cadastrais");
+
+            if ($response->getStatusCode() == 200) {
+                $body = $response->getBody()->getContents();
+                $jsonResult = json_decode($body);
+
+                $message = "🎓 *Dados Cadastrais*\n\n";
+                $message .= "*Nome*: $jsonResult->nome\n";
+                $message .= "*RA*: $jsonResult->ra\n";
+                $message .= "*Instituição*: $jsonResult->instituicao\n";
+                $message .= "*Curso*: $jsonResult->curso\n";
+                $message .= "*Turno*: $jsonResult->turno\n";
+
+                self::sendMessage($chatId, $message);
+            } else {
+                self::sendMessage($chatId, "🚫 Infelizmente ocorreu um erro");
+            }
+
+        } else {
+            self::sendMessage($chatId, "🔓 Você não está conectado. Use /conectar.");
+        }
         Log::debug('DadosCadastraisCommandService.process - FIM');
 
     }

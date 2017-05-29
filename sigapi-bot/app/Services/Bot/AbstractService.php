@@ -4,6 +4,8 @@ namespace App\Services\Bot;
 
 use Illuminate\Support\Facades\Cache;
 use Telegram\Bot\Api;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
 
 abstract class AbstractService {
 
@@ -25,5 +27,16 @@ abstract class AbstractService {
     protected static function hasToken($chatId) {
         return Cache::has($chatId);
     }
+
+    protected static function getClient($chatId) {
+        return new Client([
+            'base_uri' => 'http://api.sigapi.info/api/',
+            'timeout' => 0,
+            'headers' => [
+                'Authorization' => 'Bearer ' . Cache::get($chatId)
+            ]
+        ]);
+    }
+
 
 }

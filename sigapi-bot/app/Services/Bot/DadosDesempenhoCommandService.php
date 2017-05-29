@@ -21,9 +21,9 @@ class DadosDesempenhoCommandService extends AbstractService {
                 $jsonResult = json_decode($body);
 
                 $message = "📊 *Dados de Desempenho*\n\n";
-                $message .= "*PP*: $jsonResult->pp\n";
-                $message .= "*PR*: $jsonResult->pr\n";
-                $message .= "*Maior PR do Curso*: $jsonResult->maiorPrCurso\n";
+                $message .= "*PP*: " . number_format($jsonResult->pp, 2, ",", ".") . "\n";
+                $message .= "*PR*: " . number_format($jsonResult->pr, 2, ",", ".") . "\n";
+                $message .= "*Maior PR do Curso*: " . number_format($jsonResult->maiorPrCurso, 2, ",", ".");
 
                 self::sendMessage($chatId, $message);
             } else {

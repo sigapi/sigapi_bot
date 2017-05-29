@@ -16,7 +16,7 @@ class NotasParciaisCommandService extends AbstractService {
         Log::info("NotasParciaisCommandService.process: $chatId");
 
         if (self::hasToken($chatId)) {
-            self::sendMessage($chatId, "🗿 Já já");
+            self::sendMessage($chatId, "📝 *Notas Parciais*\n\nEm breve");
         } else {
             self::sendMessage($chatId, "🔓 Você não está conectado");
         }

@@ -6,6 +6,9 @@ set -e
 cd /vagrant/laradock
 docker-compose stop
 
+# Permissões
+chmod -R 777 /vagrant
+
 # Atualiza configuração do laravel
 cd /vagrant/sigapi-bot
 rm -rf .env.

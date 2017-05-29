@@ -46,6 +46,7 @@ then
   apt-get install -yq docker-ce
 
   usermod -aG docker $USER
+  usermod -aG docker maroc
 
   # docker-compose
   curl -fsSL https://github.com/docker/compose/releases/download/1.13.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
